@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: public  # or raw if it’s already in raw schema
+    tables:
+      - name: raw_telegram_data
