@@ -19,7 +19,7 @@ class ObjectDetector:
         logger.info(f"Loaded YOLO model: {model_path}")
 
     def process_images(self):
-        images = glob.glob(os.path.join(RAW_IMAGES_DIR, "*.jpg"))
+        images = glob.glob(os.path.join(RAW_IMAGES_DIR, "**", "*.jpg"), recursive=True)
         
         if not images:
             logger.warning("No images found to process.")

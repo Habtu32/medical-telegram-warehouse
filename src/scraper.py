@@ -43,6 +43,17 @@ class TelegramScraper:
     async def scrape_channel(self, channel_username, limit=100):
         logger.info(f"Starting scrape for channel: {channel_username}")
         
+        # Current date for folder structure
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # Prepare channel-specific message folder
+        msg_date_dir = os.path.join(MESSAGES_DIR, today)
+        os.makedirs(msg_date_dir, exist_ok=True)
+        
+        # Prepare channel and date specific image folder
+        img_channel_date_dir = os.path.join(IMAGES_DIR, channel_username, today)
+        os.makedirs(img_channel_date_dir, exist_ok=True)
+
         data = []
         try:
             # Get entity ensures we have the correct channel reference
@@ -60,16 +71,17 @@ class TelegramScraper:
 
                 # Download Image if present
                 if message.photo:
-                    filename = f"{channel_username}_{message.id}.jpg"
-                    filepath = os.path.join(IMAGES_DIR, filename)
+                    # Rename to just message_id.jpg as per request since folder has channel name
+                    filename = f"{message.id}.jpg"
+                    filepath = os.path.join(img_channel_date_dir, filename)
                     await message.download_media(file=filepath)
                     msg_data["media_path"] = filepath
-                    logger.debug(f"Downloaded image: {filename}")
+                    logger.debug(f"Downloaded image: {channel_username}/{today}/{filename}")
 
                 data.append(msg_data)
 
-            # Save Messages to JSON
-            output_file = os.path.join(MESSAGES_DIR, f"{channel_username}.json")
+            # Save Messages to JSON: YYYY-MM-DD/channel.json
+            output_file = os.path.join(msg_date_dir, f"{channel_username}.json")
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
             

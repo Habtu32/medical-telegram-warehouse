@@ -31,7 +31,7 @@ def get_db_engine():
 def load_raw_data():
     engine = get_db_engine()
     
-    json_files = glob.glob(os.path.join(RAW_DATA_DIR, "*.json"))
+    json_files = glob.glob(os.path.join(RAW_DATA_DIR, "**", "*.json"), recursive=True)
     
     all_data = []
     
