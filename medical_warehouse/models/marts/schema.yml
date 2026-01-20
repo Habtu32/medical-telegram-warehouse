@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: fact_telegram_messages
+    description: "Fact table containing Telegram messages with engagement metrics and time attributes."
+    columns:
+      - name: fact_id
+        description: "Surrogate primary key for each Telegram message fact record."
+        tests:
+          - unique
+          - not_null
+
+      - name: message_id
+        description: "Original Telegram message identifier."
+        tests:
+          - unique
+          - not_null
+
+      - name: channel_id
+        description: "Foreign key referencing the Telegram channel."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channel')
+              field: channel_id
+
+      - name: message_date
+        description: "Date the message was posted."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_value
+
+      - name: views
+        description: "Number of views for the Telegram message."
+        tests:
+          - not_null
+
+      - name: forwards
+        description: "Number of times the message was forwarded."
+        tests:
+          - not_null
+
+      - name: has_media
+        description: "Boolean flag indicating whether the message contains media."
+        tests:
+          - not_null
+  - name: dim_channel
+    description: "Dimension table containing Telegram channel metadata."
+    columns:
+      - name: channel_id
+        description: "Unique identifier for each Telegram channel."
+        tests:
+          - unique
+          - not_null
+
+      - name: channel_name
+        description: "Human-readable name of the Telegram channel."
+
+  - name: dim_date
+    description: "Date dimension table for calendar-based analysis."
+    columns:
+      - name: date_value
+        description: "Primary date value."
+        tests:
+          - unique
+          - not_null
+
+      - name: year
+        description: "Calendar year."
+
+      - name: month
+        description: "Calendar month number."
+
+      - name: weekday
+        description: "Day of week name."

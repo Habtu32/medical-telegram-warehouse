@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: raw
-    schema: public  # or raw if it’s already in raw schema
+  - name: raw_marts
+    schema: raw_marts  # This must match your Postgres schema
     tables:
       - name: raw_telegram_data
