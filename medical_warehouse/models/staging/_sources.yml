@@ -2,6 +2,8 @@ version: 2
 
 sources:
   - name: raw_marts
-    schema: raw_marts  # This must match your Postgres schema
+    database: medical_warehouse_utf8
+    schema: raw_marts
     tables:
       - name: raw_telegram_data
+      - name: yolo_detections

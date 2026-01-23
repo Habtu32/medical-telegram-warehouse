@@ -75,3 +75,45 @@ models:
 
       - name: weekday
         description: "Day of week name."
+
+version: 2
+
+models:
+  - name: fct_image_detections
+    description: "YOLO object detection results joined with Telegram messages."
+    columns:
+      - name: message_id
+        description: "Unique identifier of the Telegram message."
+        tests:
+          - unique
+          - not_null
+
+      - name: channel_id
+        description: "Channel ID where the message was posted."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channel')
+              field: channel_id
+
+      - name: date_key
+        description: "Date of the message."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_value
+
+      - name: detected_objects
+        description: "Objects detected by YOLO in the image."
+
+      - name: confidence_score
+        description: "Average confidence score of the detected objects."
+
+      - name: image_category
+        description: "Categorized type of image: promotional, product_display, lifestyle, other."
+
+      - name: views
+        description: "Number of views of the message."
+        tests:
+          - not_null
