@@ -17,7 +17,10 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5432")
 
-RAW_DATA_DIR = "../data/raw/telegram_messages"
+# Compute path relative to project root (one level above `src`)
+RAW_DATA_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), "..", "data", "raw", "telegram_messages")
+)
 
 # -----------------------------
 # DB Engine
