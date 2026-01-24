@@ -2,10 +2,15 @@ from ultralytics import YOLO
 import pandas as pd
 import os
 
-model = YOLO("yolov8n.pt")
+model = YOLO(os.path.join(os.path.dirname(__file__), "yolov8n.pt"))
 
-IMAGE_ROOT = "../data/raw/images"
-OUTPUT_CSV = "../data/yolo_detections.csv"
+# Paths relative to project root (one level above `src`)
+IMAGE_ROOT = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), "..", "data", "raw", "images")
+)
+OUTPUT_CSV = os.path.normpath(
+    os.path.join(os.path.dirname(__file__), "..", "data", "yolo_detections.csv")
+)
 
 rows = []
 
